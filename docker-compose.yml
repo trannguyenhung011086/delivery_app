@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: delivery_app_dev
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+      - deps:/app/deps
+      - build:/app/_build
+    environment:
+      DATABASE_URL: ecto://postgres:postgres@db/delivery_app_dev
+      MIX_ENV: dev
+      PHX_HOST: localhost
+      BIND_IP: 0.0.0.0
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+
+volumes:
+  pgdata:
+  deps:
+  build:
