@@ -4,7 +4,7 @@ defmodule DeliveryAppWeb.OrdersController do
 
   def create(conn, params) do
     case Orders.create_order_with_delivery(params) do
-      {:ok, order} -> conn |> put_status(:created) |> json(%{data: order})
+      {:ok, order} -> conn |> put_status(:created) |> json(%{data: order_json(order)})
       {:error, :invalid_delivery_option} -> conn |> put_status(:bad_request) |> json(%{error: "Invalid delivery option"})
       {:error, changeset} -> conn |> put_status(:unprocessable_entity) |> json(%{errors: "Validation failed", details: changeset_errors(changeset)})
       {:error, reason} -> conn |> put_status(:internal_server_error) |> json(%{error: reason})
@@ -24,5 +24,26 @@ defmodule DeliveryAppWeb.OrdersController do
         String.replace(acc, "%{#{key}}", to_string(value))
       end)
     end)
+  end
+
+  defp order_json(order) do
+    %{
+      id: order.id,
+      customer_name: order.customer_name,
+      delivery_address: order.delivery_address,
+      delivery_option: %{
+        code: order.delivery_option.code,
+        name: order.delivery_option.name,
+        eta_days: order.delivery_option.eta_days,
+        base_fee_cents: order.delivery_option.base_fee_cents
+      },
+      tracking_events: Enum.map(order.tracking_events, fn event ->
+        %{
+          status: event.status,
+          description: event.description,
+          occurred_at: event.occurred_at
+        }
+      end)
+    }
   end
 end
