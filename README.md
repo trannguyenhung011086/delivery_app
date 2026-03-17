@@ -85,9 +85,9 @@ Make event handlers idempotent with a `processed_events` table. Simulate partial
 
 ## Tech stack
 
-- Elixir 1.17 + Erlang/OTP 27
-- Phoenix 1.7 (API-only, no LiveView)
-- Ecto + PostgreSQL 16
+- Elixir 1.9 + Erlang/OTP 28
+- Phoenix 1.8.5 (API-only, no LiveView)
+- Ecto + PostgreSQL 18
 - ExUnit for testing
 
 ## Running locally
