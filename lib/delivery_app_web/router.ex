@@ -9,7 +9,7 @@ defmodule DeliveryAppWeb.Router do
     pipe_through :api
 
     get "/health", HealthController, :show
-    resources "/orders", OrderController, only: [:index, :show, :create]
+    resources "/orders", OrdersController, only: [:index, :show, :create]
     resources "/delivery_options", DeliveryOptionsController, only: [:index]
     resources "/tracking_events", TrackingEventsController, only: [:create]
   end

@@ -18,8 +18,8 @@ defmodule DeliveryApp.Orders.Order do
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:customer_name, :address, :postcode, :total_cents, :status])
-    |> validate_required([:customer_name, :address, :postcode, :total_cents, :status])
+    |> cast(attrs, [:customer_name, :address, :postcode, :total_cents, :status, :delivery_option_id])
+    |> validate_required([:customer_name, :address, :postcode, :total_cents, :status, :delivery_option_id])
     |> validate_number(:total_cents, greater_than: 0)
     |> validate_inclusion(:status, ["CREATED", "PICKED_UP", "IN_TRANSIT", "DELIVERED", "CANCELLED"])
     |> assoc_constraint(:delivery_option)

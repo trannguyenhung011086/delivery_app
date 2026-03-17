@@ -13,7 +13,7 @@ defmodule DeliveryAppWeb.OrdersController do
 
   def show(conn, %{"id" => id}) do
     case Orders.get_order!(id) do
-      order -> json(conn, %{data: order})
+      order -> json(conn, %{data: order_json(order)})
       nil -> conn |> put_status(:not_found) |> json(%{error: "Order not found"})
     end
   end
@@ -30,8 +30,11 @@ defmodule DeliveryAppWeb.OrdersController do
     %{
       id: order.id,
       customer_name: order.customer_name,
-      delivery_address: order.delivery_address,
+      address: order.address,
       delivery_option: %{
+        # Ensure delivery_option is loaded. While ideally this would be preloaded
+        # in the context function, adding fetch_assoc here acts as a safeguard
+        # in case it isn't, preventing a runtime error.
         code: order.delivery_option.code,
         name: order.delivery_option.name,
         eta_days: order.delivery_option.eta_days,

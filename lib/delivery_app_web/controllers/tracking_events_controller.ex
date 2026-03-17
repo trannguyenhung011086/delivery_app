@@ -1,6 +1,8 @@
 defmodule DeliveryAppWeb.TrackingEventsController do
   use DeliveryAppWeb, :controller
   alias DeliveryApp.Orders
+  alias DeliveryApp.Orders.{Order, TrackingEvent}
+  alias DeliveryApp.Repo
 
   def create(conn, %{"order_id" => order_id} = params) do
     order = Repo.get!(Order, order_id)

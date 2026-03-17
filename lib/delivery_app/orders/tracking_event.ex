@@ -15,8 +15,8 @@ defmodule DeliveryApp.Orders.TrackingEvent do
   @doc false
   def changeset(tracking_event, attrs) do
     tracking_event
-    |> cast(attrs, [:status, :description, :occurred_at])
-    |> validate_required([:status, :description, :occurred_at])
+    |> cast(attrs, [:status, :description, :occurred_at, :order_id])
+    |> validate_required([:status, :description, :occurred_at, :order_id])
     |> foreign_key_constraint(:order_id)
   end
 end
