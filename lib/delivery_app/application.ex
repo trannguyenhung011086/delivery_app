@@ -15,7 +15,9 @@ defmodule DeliveryApp.Application do
       # Start a worker by calling: DeliveryApp.Worker.start_link(arg)
       # {DeliveryApp.Worker, arg},
       # Start to serve requests, typically the last entry
-      DeliveryAppWeb.Endpoint
+      DeliveryAppWeb.Endpoint,
+      {Registry, keys: :unique, name: DeliveryApp.OrderRegistry},
+      {DynamicSupervisor, strategy: :one_for_one, name: DeliveryApp.OrderSupervisor}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
